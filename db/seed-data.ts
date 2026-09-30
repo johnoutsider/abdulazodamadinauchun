@@ -1,0 +1,110 @@
+// Boshlang'ich tasnif (Brown & Levinson, 1987). Tadqiqotchi admin paneldan o'zgartira oladi.
+export type SeedStrategy = {
+  code: string; uz: string; en: string; descUz: string; descEn: string; parent?: string;
+};
+
+export const STRATEGIES: SeedStrategy[] = [
+  { code: "bald", uz: "Ochiq (bald on-record)", en: "Bald on-record",
+    descUz: "Fikr to'g'ridan-to'g'ri, yumshatuvchi vositalarsiz bildiriladi.",
+    descEn: "The message is stated directly, without softening devices." },
+  { code: "positive", uz: "Ijobiy xushmuomalalik", en: "Positive politeness",
+    descUz: "Tinglovchining ijobiy imijini qo'llab-quvvatlash, yaqinlik va hamjihatlik ko'rsatish.",
+    descEn: "Supports the hearer's positive face; signals closeness and solidarity." },
+  { code: "negative", uz: "Salbiy xushmuomalalik", en: "Negative politeness",
+    descUz: "Tinglovchining erkinligi va mustaqilligini hurmat qilish, majburlamaslik.",
+    descEn: "Respects the hearer's autonomy; avoids imposition." },
+  { code: "offrecord", uz: "Yashirin (off-record)", en: "Off-record",
+    descUz: "Ishora, kinoya yoki noaniq ifoda; talab bilvosita bildiriladi.",
+    descEn: "Indirect hints or ambiguity; the request is implied rather than stated." },
+  { code: "pos_compliment", uz: "Kompliment, e'tibor berish", en: "Compliment / notice hearer", parent: "positive",
+    descUz: "Tinglovchining yutug'i, ko'rinishi yoki xususiyatini ta'kidlash.", descEn: "Notice and praise the hearer." },
+  { code: "pos_inclusive", uz: "Birgalik ifodasi (biz)", en: "In-group / inclusive 'we'", parent: "positive",
+    descUz: "Guruh a'zoligi, murojaat shakllari (aka, opa, dear) va «biz» dan foydalanish.", descEn: "In-group identity markers and inclusive 'we'." },
+  { code: "pos_gratitude", uz: "Minnatdorchilik va va'da", en: "Gratitude / offer", parent: "positive",
+    descUz: "Rahmat, taklif va va'da orqali hamkorlikni ko'rsatish.", descEn: "Thanking, offering, promising." },
+  { code: "neg_hedge", uz: "Yumshatish (hedge)", en: "Hedging / conventional indirectness", parent: "negative",
+    descUz: "«Ehtimol», «could you», shart maylidagi shakllar.", descEn: "'Could you', 'perhaps', modal and conditional forms." },
+  { code: "neg_apology", uz: "Kechirim so'rash", en: "Apology", parent: "negative",
+    descUz: "Xalaqit berganlik uchun uzr, «kechirasiz», «sorry to bother you».", descEn: "Apologising for imposition." },
+  { code: "neg_deference", uz: "Hurmat ifodasi", en: "Deference / honorifics", parent: "negative",
+    descUz: "Siz-shakl, hurmat qo'shimchalari, unvonlar (sir, professor).", descEn: "Honorifics, formal address, 'sir'." },
+  { code: "off_hint", uz: "Ishora", en: "Hint", parent: "offrecord",
+    descUz: "Talabni to'g'ridan-to'g'ri aytmasdan ishora qilish.", descEn: "Stating a need without asking." },
+  { code: "bald_imperative", uz: "Buyruq mayli", en: "Direct imperative", parent: "bald",
+    descUz: "Yaqinlar orasida yoki shoshilinch holatda buyruq.", descEn: "Imperatives in urgent or intimate contexts." },
+];
+
+export const FACTORS = [
+  { type: "age", value: "younger", uz: "Tinglovchi yoshroq", en: "Hearer younger" },
+  { type: "age", value: "peer", uz: "Tengdosh", en: "Peer" },
+  { type: "age", value: "older", uz: "Tinglovchi kattaroq", en: "Hearer older" },
+  { type: "gender", value: "male", uz: "Erkak", en: "Male" },
+  { type: "gender", value: "female", uz: "Ayol", en: "Female" },
+  { type: "status", value: "lower", uz: "Tinglovchi maqomi past", en: "Hearer lower status" },
+  { type: "status", value: "equal", uz: "Teng maqom", en: "Equal status" },
+  { type: "status", value: "higher", uz: "Tinglovchi maqomi yuqori", en: "Hearer higher status" },
+  { type: "distance", value: "close", uz: "Yaqin (do'st, oila)", en: "Close" },
+  { type: "distance", value: "neutral", uz: "Tanish", en: "Acquaintance" },
+  { type: "distance", value: "distant", uz: "Notanish / uzoq", en: "Distant / stranger" },
+  { type: "formality", value: "informal", uz: "Norasmiy vaziyat", en: "Informal" },
+  { type: "formality", value: "formal", uz: "Rasmiy vaziyat", en: "Formal" },
+];
+
+export const FACTOR_TYPES = ["age", "gender", "status", "distance", "formality"] as const;
+
+type SeedUnit = {
+  text: string; lang: "en" | "uz"; eq: string; strategy: string; situation: string; example: string;
+  factors: Record<string, string>;
+};
+
+// NAMUNA: tadqiqotchi o'z korpusi bilan almashtiradi (admin panel → Korpus → CSV import).
+export const SAMPLE_UNITS: SeedUnit[] = [
+  { text: "Could you please pass me the salt?", lang: "en", eq: "Iltimos, tuzni uzatib yuborolmaysizmi?", strategy: "neg_hedge",
+    situation: "Restoranda notanish odamdan iltimos", example: "— Could you please pass me the salt? — Sure, here you go.",
+    factors: { distance: "distant", formality: "formal", status: "equal" } },
+  { text: "I'm sorry to bother you, but could I ask a quick question?", lang: "en", eq: "Bezovta qilganim uchun kechirasiz, bitta savol bersam bo'ladimi?", strategy: "neg_apology",
+    situation: "Talaba professorga murojaat qilmoqda", example: "— I'm sorry to bother you, but could I ask a quick question, Professor?",
+    factors: { status: "higher", formality: "formal", distance: "distant" } },
+  { text: "Hey buddy, nice shoes! Where did you get them?", lang: "en", eq: "Do'stim, ajoyib oyoq kiyim! Qayerdan olding?", strategy: "pos_compliment",
+    situation: "Do'stlar norasmiy suhbatda", example: "— Hey buddy, nice shoes! — Thanks, got them last week.",
+    factors: { distance: "close", formality: "informal", status: "equal", age: "peer" } },
+  { text: "It's a bit cold in here, isn't it?", lang: "en", eq: "Bu yerda biroz sovuq, shunday emasmi?", strategy: "off_hint",
+    situation: "Xonadagi derazani yopishni bilvosita so'rash", example: "— It's a bit cold in here, isn't it? — Oh, let me close the window.",
+    factors: { distance: "neutral", formality: "informal" } },
+  { text: "Close the door.", lang: "en", eq: "Eshikni yoping.", strategy: "bald_imperative",
+    situation: "Yaqin kishiga shoshilinch buyruq", example: "— Close the door! It's freezing.",
+    factors: { distance: "close", formality: "informal", status: "equal" } },
+  { text: "Would you mind if I opened the window, sir?", lang: "en", eq: "Derazani ochsam qarshi bo'lmaysizmi, janob?", strategy: "neg_deference",
+    situation: "Xodim rahbarga murojaat qilmoqda", example: "— Would you mind if I opened the window, sir?",
+    factors: { status: "higher", formality: "formal", age: "older" } },
+  { text: "Let's have a cup of tea together, shall we?", lang: "en", eq: "Keling, birga choy ichamiz, xo'pmi?", strategy: "pos_inclusive",
+    situation: "Hamkasblar tanaffusda", example: "— Let's have a cup of tea together, shall we?",
+    factors: { distance: "neutral", formality: "informal", status: "equal" } },
+  { text: "Thank you so much, I really appreciate your help!", lang: "en", eq: "Katta rahmat, yordamingizni juda qadrlayman!", strategy: "pos_gratitude",
+    situation: "Yordam uchun minnatdorchilik", example: "— Thank you so much, I really appreciate your help!",
+    factors: { distance: "neutral", formality: "informal" } },
+  { text: "Iltimos, kechiktirmasangiz, hisobotni bugun yuborsangiz bo'ladimi?", lang: "uz", eq: "Would it be possible to send the report today, please?", strategy: "neg_hedge",
+    situation: "Xodim hamkasbidan iltimos qilmoqda", example: "— Iltimos, hisobotni bugun yuborsangiz bo'ladimi?",
+    factors: { status: "equal", formality: "formal", distance: "neutral" } },
+  { text: "Kechirasiz, sizni bezovta qilyapman, yo'l qayoqqa ketadi?", lang: "uz", eq: "Excuse me, sorry to bother you, which way is the road?", strategy: "neg_apology",
+    situation: "Ko'chada notanish kishidan yo'l so'rash", example: "— Kechirasiz, yo'l qayoqqa ketadi?",
+    factors: { distance: "distant", formality: "formal", age: "older" } },
+  { text: "Assalomu alaykum, domla, sog'-salomatmisiz?", lang: "uz", eq: "Hello professor, how are you doing?", strategy: "neg_deference",
+    situation: "Talaba ustozini kutib olmoqda", example: "— Assalomu alaykum, domla, sog'-salomatmisiz?",
+    factors: { status: "higher", age: "older", formality: "formal", distance: "distant" } },
+  { text: "Akajon, sizga rahmat, doim yordam berasiz!", lang: "uz", eq: "Dear brother, thank you, you always help!", strategy: "pos_inclusive",
+    situation: "Kichik yoshdagi kishi qo'shnisiga minnatdorchilik bildiradi", example: "— Akajon, sizga rahmat!",
+    factors: { age: "older", distance: "neutral", formality: "informal" } },
+  { text: "Qani, bir piyola choy ichaylik-chi, birga o'tiramiz.", lang: "uz", eq: "Come on, let's have a cup of tea and sit together.", strategy: "pos_inclusive",
+    situation: "Mehmonni choyga taklif qilish", example: "— Qani, bir piyola choy ichaylik-chi.",
+    factors: { distance: "close", formality: "informal" } },
+  { text: "Ha, bugun havo sovuq ekan-a...", lang: "uz", eq: "Well, it seems to be cold today...", strategy: "off_hint",
+    situation: "Deraza yopilishini bilvosita so'rash", example: "— Ha, bugun havo sovuq ekan-a...",
+    factors: { distance: "neutral", formality: "informal" } },
+  { text: "Eshikni yop!", lang: "uz", eq: "Close the door!", strategy: "bald_imperative",
+    situation: "Yaqin do'stga yoki kichik ukaga buyruq", example: "— Eshikni yop, shamol!",
+    factors: { distance: "close", age: "younger", formality: "informal" } },
+  { text: "Ajoyib ko'rinasiz, bu ko'ylak sizga juda yarashibdi!", lang: "uz", eq: "You look wonderful, this dress suits you so well!", strategy: "pos_compliment",
+    situation: "Do'stiga kompliment", example: "— Ajoyib ko'rinasiz!",
+    factors: { gender: "female", distance: "close", formality: "informal" } },
+];
