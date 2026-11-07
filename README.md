@@ -28,6 +28,7 @@ Admin (tadqiqotchi) akkaunti `ADMIN_EMAIL` / `ADMIN_PASSWORD` dan yaratiladi. Na
 5. `sudo certbot --nginx -d example.uz` — HTTPS.
 6. Zaxira: `crontab -e` → `0 3 * * * /opt/politeness/deploy/backup.sh` (7 kun saqlanadi).
 7. Avtomatik yangilash: GitHub Secrets ga `VPS_HOST` va `VPS_SSH_KEY` qo'shing; `main` ga push qilinganda `.github/workflows/ci.yml` tekshiradi va deploy qiladi.
+   GitHub Actions ishlamasa (masalan billing sababli): `deploy` foydalanuvchisi crontab'iga `* * * * * bash /opt/politeness/deploy/auto-update.sh >> /home/deploy/auto-deploy.log 2>&1` — server har daqiqada `main` ni tekshirib, yangi commit bo'lsa o'zi deploy qiladi.
 
 ## Korpusni yuklash
 Admin → Korpus → CSV/Excel import. Ustunlar: `db/units-template.csv`. Strategiya kodlari Admin → Tasnif sahifasida.
