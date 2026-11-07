@@ -48,5 +48,15 @@ services:
       migrate:
         condition: service_completed_successfully
 
+  # Domensiz tashqi HTTPS link (Cloudflare quick tunnel). Yoqish: .env ga COMPOSE_PROFILES=tunnel
+  # Link: docker compose logs tunnel | grep trycloudflare.com  (konteyner qayta yaratilganda o'zgaradi)
+  tunnel:
+    image: cloudflare/cloudflared:2025.11.1
+    profiles: ["tunnel"]
+    restart: unless-stopped
+    command: ["tunnel", "--no-autoupdate", "--url", "http://app:3000"]
+    depends_on:
+      - app
+
 volumes:
   pgdata:
