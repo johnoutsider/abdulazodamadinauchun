@@ -44,9 +44,9 @@ export default async function Units() {
         <a href="/api/export?type=units&format=csv" className="rounded-lg border bg-white px-4 py-2">CSV</a>
         <a href="/api/export?type=units&format=xlsx" className="rounded-lg border bg-white px-4 py-2">XLSX</a>
       </div>
-      <div className="overflow-x-auto rounded-xl border bg-white">
+      <div className="card overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-slate-100"><tr><th className="p-3">Til</th><th className="p-3">Birlik</th><th className="p-3">Ekvivalent</th><th className="p-3">Strategiya</th><th /></tr></thead>
+          <thead className="border-b bg-slate-50"><tr><th className="p-3">Til</th><th className="p-3">Birlik</th><th className="p-3">Ekvivalent</th><th className="p-3">Strategiya</th><th /></tr></thead>
           <tbody>{rows.map((r) => (
             <tr key={r.id} className="border-t"><td className="p-3 uppercase">{r.lang}</td><td className="p-3">{r.text}</td><td className="p-3">{r.equivalent}</td><td className="p-3">{r.name_uz}</td>
               <td className="p-3"><form action={deleteUnit}><input type="hidden" name="id" value={r.id} /><button className="text-red-700 hover:underline">O&apos;chirish</button></form></td></tr>))}</tbody>

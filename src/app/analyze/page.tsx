@@ -13,7 +13,10 @@ export default async function AnalyzePage() {
   const options = rows.map((r) => ({ type: r.type, value: r.value, label: lang === "uz" ? r.label_uz : r.label_en }));
   return (
     <>
-      <h1 className="mb-6 text-2xl font-bold">{t("analyze_title")}</h1>
+      <header className="mb-8">
+        <h1 className="text-3xl font-semibold text-slate-900">{t("analyze_title")}</h1>
+        <p className="mt-2 text-slate-600">{t("analyze_sub")}</p>
+      </header>
       <AnalyzeForm lang={lang} t={dictFor(lang)} options={options} typeLabels={FACTOR_TYPE_LABELS[lang]} />
     </>
   );

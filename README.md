@@ -2,11 +2,11 @@
 
 PhD dissertatsiyasi uchun MVP: ingliz va o'zbek tillaridagi xushmuomalalik birliklarini tahlil qiladi, strategiyani va ijtimoiy omillarni (yosh, gender, maqom, masofa, rasmiylik) aniqlaydi, misol va yaxshiroq variant beradi, natijalarni statistika va Excel/SPSS eksport bilan tadqiqotchiga taqdim etadi.
 
-Reja: [REJA.md](REJA.md). Stek: Next.js 16, PostgreSQL, Tailwind, Recharts, Claude API.
+Reja: [REJA.md](REJA.md). Stek: Next.js 16, PostgreSQL, Tailwind, Recharts, OpenAI API.
 
 ## Tahlil qanday ishlaydi
 1. Kiritilgan birlik korpusda aniq topilsa, tadqiqotchi tasdiqlagan javob qaytadi (manba: korpus).
-2. Aks holda `ANTHROPIC_API_KEY` bo'lsa Claude ishlaydi; korpusdan eng yaqin misollar kontekst sifatida beriladi (manba: AI).
+2. Aks holda `OPENAI_API_KEY` bo'lsa OpenAI modeli (`OPENAI_MODEL`, standart `gpt-5-mini`) ishlaydi; korpusdan eng yaqin misollar kontekst sifatida beriladi (manba: AI).
 3. Kalit yo'q yoki AI xato bersa, kalit so'zlarga asoslangan qoidalar ishlaydi (manba: qoidalar).
 
 Har bir tahlil bazaga yoziladi. Mehmon kuniga 3 ta, ro'yxatdan o'tgan foydalanuvchi 50 ta tahlil qila oladi.
@@ -34,3 +34,6 @@ Admin → Korpus → CSV/Excel import. Ustunlar: `db/units-template.csv`. Strate
 
 ## Google Sheet so'rovnomasi
 Sheet'da Fayl → Yuklab olish → CSV. Admin → So'rovnomalar → avval so'rovnoma yarating, keyin faylni import qiling. Har bir qator bitta respondent, ustun sarlavhasi savol sifatida saqlanadi.
+
+## Domensiz, boshqa saytlar bilan umumiy serverda
+80/443 portlari boshqa xizmat (masalan Caddy) band bo'lsa, nginx o'rnatmasdan ilovani alohida portda ochish mumkin. `.env` ga `APP_BIND=0.0.0.0`, `APP_PORT=8090`, `COOKIE_SECURE=0` yozing — sayt `http://SERVER_IP:8090` da ochiladi. Domen va HTTPS ulanganda bu qatorlarni olib tashlang.

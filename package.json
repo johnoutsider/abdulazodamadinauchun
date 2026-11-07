@@ -11,10 +11,10 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.129.0",
     "bcryptjs": "^3.0.3",
     "jose": "^6.2.12",
     "next": "16.3.7",
+    "openai": "^7.53.0",
     "papaparse": "^5.7.0",
     "pg": "^8.23.0",
     "react": "19.2.8",

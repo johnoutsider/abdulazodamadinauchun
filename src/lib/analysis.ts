@@ -1,4 +1,4 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import { z } from "zod";
 import { query } from "./db";
 import { FACTOR_TYPES } from "../../db/seed-data";
@@ -75,7 +75,7 @@ function ruleBased(text: string): { code: string; why: string } {
   return { code: "bald", why: "Yumshatuvchi vositalar topilmadi: fikr to'g'ridan-to'g'ri bildirilmoqda." };
 }
 
-// --- Claude ---
+// --- OpenAI ---
 const AiSchema = z.object({
   strategy_code: z.string(),
   factors: z.record(z.string(), z.string()).default({}),
@@ -90,7 +90,7 @@ async function aiAnalyze(args: {
   text: string; lang: string; situation: string; given: Factors; uiLang: "uz" | "en";
   strategies: Strat[]; neighbors: { u: UnitRow; score: number }[];
 }): Promise<z.infer<typeof AiSchema>> {
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const stratList = args.strategies
     .map((s) => `- ${s.code}: ${s.name_en} — ${s.desc_en}${s.parent_code ? ` (sub of ${s.parent_code})` : ""}`)
     .join("\n");
@@ -114,13 +114,16 @@ Write explanation and suggestion reasons in ${args.uiLang === "uz" ? "Uzbek (Lat
 Situation: """${args.situation || "not specified"}"""
 Factors given by user: ${JSON.stringify(args.given)}`;
 
-  const res = await client.messages.create({
-    model: process.env.ANTHROPIC_MODEL || "claude-sonnet-5-5",
-    max_tokens: 1200,
-    system,
-    messages: [{ role: "user", content: user }],
+  const res = await client.chat.completions.create({
+    model: process.env.OPENAI_MODEL || "gpt-5-mini",
+    max_completion_tokens: 4000,
+    response_format: { type: "json_object" },
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: user },
+    ],
   });
-  const raw = res.content.map((b) => (b.type === "text" ? b.text : "")).join("");
+  const raw = res.choices[0]?.message?.content ?? "";
   const json = raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1);
   return AiSchema.parse(JSON.parse(json));
 }
@@ -152,8 +155,8 @@ export async function analyze(input: {
   );
   const valid = new Set(strategies.map((s) => s.code));
 
-  // 2) Claude
-  if (process.env.ANTHROPIC_API_KEY) {
+  // 2) OpenAI
+  if (process.env.OPENAI_API_KEY) {
     try {
       const ai = await aiAnalyze({ ...input, strategies, neighbors: ranked, uiLang: input.uiLang });
       if (valid.has(ai.strategy_code)) {
