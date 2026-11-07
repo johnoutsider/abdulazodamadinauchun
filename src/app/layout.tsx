@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin", "latin-ext", "cyrillic"], variable: "--
 const serif = Source_Serif_4({ subsets: ["latin", "latin-ext", "cyrillic"], variable: "--font-serif-display", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Xushmuomalalik tahlili — Politeness Analyzer",
+  title: "PoliteLingua — xushmuomalalik tahlili",
   description: "Ingliz va o'zbek tillarida xushmuomalalik strategiyalari va ijtimoiy omillarni tahlil qilish platformasi.",
 };
 

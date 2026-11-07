@@ -1,4 +1,4 @@
-# Xushmuomalalik tahlili platformasi
+# PoliteLingua — xushmuomalalik tahlili platformasi
 
 PhD dissertatsiyasi uchun MVP: ingliz va o'zbek tillaridagi xushmuomalalik birliklarini tahlil qiladi, strategiyani va ijtimoiy omillarni (yosh, gender, maqom, masofa, rasmiylik) aniqlaydi, misol va yaxshiroq variant beradi, natijalarni statistika va Excel/SPSS eksport bilan tadqiqotchiga taqdim etadi.
 

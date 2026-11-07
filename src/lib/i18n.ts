@@ -4,7 +4,7 @@ export type Lang = "uz" | "en";
 
 const dict = {
   uz: {
-    appName: "Xushmuomalalik tahlili",
+    appName: "PoliteLingua",
     nav_home: "Bosh sahifa", nav_analyze: "Tahlil", nav_corpus: "Korpus", nav_survey: "So'rovnoma",
     nav_about: "Ilmiy ish haqida", nav_login: "Kirish", nav_register: "Ro'yxatdan o'tish",
     nav_logout: "Chiqish", nav_me: "Kabinet", nav_admin: "Boshqaruv",
@@ -50,7 +50,7 @@ const dict = {
     no_answer: "Ko'rsatilmagan",
   },
   en: {
-    appName: "Politeness Analyzer",
+    appName: "PoliteLingua",
     nav_home: "Home", nav_analyze: "Analyze", nav_corpus: "Corpus", nav_survey: "Survey",
     nav_about: "About the research", nav_login: "Log in", nav_register: "Sign up",
     nav_logout: "Log out", nav_me: "My account", nav_admin: "Admin",
