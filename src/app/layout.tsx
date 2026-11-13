@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               <Logo />
               <span className="leading-tight">
                 <span className="block font-serif text-[1.05rem] font-semibold text-slate-900">{t("appName")}</span>
-                <span className="block text-[0.7rem] uppercase tracking-wider text-slate-500">PhD · Sociolinguistics</span>
+                <span className="block text-[0.7rem] uppercase tracking-wider text-slate-500">PhD · Sociopragmatics</span>
               </span>
             </Link>
             <div className="order-last -mx-3 flex w-full gap-1 overflow-x-auto pt-2 lg:order-none lg:mx-0 lg:w-auto lg:pt-0">

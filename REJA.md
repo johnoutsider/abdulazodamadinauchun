@@ -1,7 +1,7 @@
 # Xushmuomalalik tahlili platformasi — loyiha rejasi (MVP)
 
 **Buyurtmachi:** Abdullazoda Madina Rasuljon qizi, PhD (O'zDJTU, 10.00.13 — Qiyosiy va chog'ishtirma tilshunoslik)
-**Dissertatsiya mavzusi:** Ingliz va o'zbek tillarida xushmuomalalikni ifodalovchi til birliklarining sotsiolingvistik xususiyatlari
+**Dissertatsiya mavzusi:** Ingliz va o'zbek tillarida xushmuomalalikni ifodalovchi til birliklarining sotsiopragmatik xususiyatlari (ijtimoiy tarmoqlar diskursi misolida)
 **Maqsad:** Seminar/himoyada ilmiy g'oyani amalda ko'rsatib beradigan ixcham veb-platforma
 **Texnologiya:** Next.js (App Router) + PostgreSQL + OpenAI API, VPS serverda joylashtiriladi
 **Muddat:** ~1 hafta (seminargacha), byudjet: 100–200 $

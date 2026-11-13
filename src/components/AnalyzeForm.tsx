@@ -70,8 +70,13 @@ export default function AnalyzeForm({ lang, t, options, typeLabels }: {
               <div className="mt-1 font-serif text-2xl font-semibold text-indigo-900">
                 {state.strategy ? name(state.strategy.nameUz, state.strategy.nameEn) : "—"}
               </div>
-              {state.strategy?.parentUz && (
-                <div className="text-sm text-slate-500">↳ {name(state.strategy.parentUz, state.strategy.parentEn ?? "")}</div>
+              {state.strategy && (
+                <div className="mt-2 text-sm text-slate-600">
+                  <span className="font-medium text-slate-500">{t.main_strategy}:</span>{" "}
+                  <span className="rounded-full bg-accent-50 px-2.5 py-0.5 font-medium text-accent-700">
+                    {state.strategy.parentUz ? name(state.strategy.parentUz, state.strategy.parentEn ?? "") : name(state.strategy.nameUz, state.strategy.nameEn)}
+                  </span>
+                </div>
               )}
               {state.strategy && <p className="mt-1 text-sm text-slate-600">{name(state.strategy.descUz, state.strategy.descEn)}</p>}
             </div>
