@@ -14,11 +14,11 @@ export default async function Survey() {
   })));
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="mb-6 text-2xl font-bold">{t("survey_title")}</h1>
-      {withQs.length === 0 && <p>{t("survey_none")}</p>}
+      <h1 className="mb-6 text-3xl font-semibold text-slate-900">{t("survey_title")}</h1>
+      {withQs.length === 0 && <p className="card p-8 text-center text-slate-500">{t("survey_none")}</p>}
       {withQs.map((s) => (
         <section key={s.id} className="mb-10">
-          <h2 className="mb-3 text-lg font-semibold">{s.title}</h2>
+          <h2 className="mb-4 text-xl font-semibold text-slate-900">{s.title}</h2>
           <SurveyForm surveyId={s.id} questions={s.qs} send={t("survey_send")} done={t("survey_done")} />
         </section>
       ))}

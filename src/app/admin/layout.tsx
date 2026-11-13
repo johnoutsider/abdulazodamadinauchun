@@ -10,8 +10,9 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   await requireResearcher();
   return (
     <div>
-      <nav className="mb-6 flex flex-wrap gap-2 border-b pb-3 text-sm">
-        {items.map(([href, label]) => <Link key={href} href={href} className="rounded bg-white px-3 py-1.5 shadow-sm hover:bg-indigo-100">{label}</Link>)}
+      <h1 className="mb-4 text-3xl font-semibold text-slate-900">Boshqaruv paneli</h1>
+      <nav className="mb-8 flex flex-wrap gap-1 rounded-xl border bg-white p-1 text-sm shadow-sm">
+        {items.map(([href, label]) => <Link key={href} href={href} className="rounded-lg px-3.5 py-2 font-medium text-slate-600 transition-colors hover:bg-indigo-50 hover:text-indigo-900">{label}</Link>)}
       </nav>
       {children}
     </div>

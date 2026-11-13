@@ -11,9 +11,9 @@ export default async function Strategies() {
   const inp = "mt-1 w-full rounded-lg border p-2";
   return (
     <div className="grid gap-6 lg:grid-cols-2">
-      <div className="overflow-x-auto rounded-xl border bg-white">
+      <div className="card overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-slate-100"><tr><th className="p-3">Kod</th><th className="p-3">Nomi</th><th className="p-3">Ta&apos;rif</th></tr></thead>
+          <thead className="border-b bg-slate-50"><tr><th className="p-3">Kod</th><th className="p-3">Nomi</th><th className="p-3">Ta&apos;rif</th></tr></thead>
           <tbody>{rows.map((r) => (
             <tr key={r.code} className="border-t"><td className="p-3 font-mono text-xs">{r.code}</td>
               <td className={`p-3 ${r.parent ? "pl-8" : "font-semibold"}`}>{r.name_uz}<div className="text-xs text-slate-500">{r.name_en}</div></td>

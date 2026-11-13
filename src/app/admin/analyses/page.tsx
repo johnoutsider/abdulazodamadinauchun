@@ -12,9 +12,9 @@ export default async function Analyses() {
         <a href="/api/export?type=analyses&format=csv" className="rounded-lg border bg-white px-4 py-2">CSV</a>
         <a href="/api/export?type=analyses&format=xlsx" className="rounded-lg border bg-white px-4 py-2">XLSX (SPSS uchun)</a>
       </div>
-      <div className="overflow-x-auto rounded-xl border bg-white">
+      <div className="card overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-slate-100"><tr><th className="p-3">Sana</th><th className="p-3">Foydalanuvchi</th><th className="p-3">Kiritilgan</th><th className="p-3">Vaziyat</th><th className="p-3">Strategiya</th><th className="p-3">Manba</th><th className="p-3">Baho</th></tr></thead>
+          <thead className="border-b bg-slate-50"><tr><th className="p-3">Sana</th><th className="p-3">Foydalanuvchi</th><th className="p-3">Kiritilgan</th><th className="p-3">Vaziyat</th><th className="p-3">Strategiya</th><th className="p-3">Manba</th><th className="p-3">Baho</th></tr></thead>
           <tbody>{rows.map((r) => (
             <tr key={r.id} className="border-t align-top">
               <td className="p-3 whitespace-nowrap">{r.created_at.toLocaleString()}</td><td className="p-3">{r.email ?? "mehmon"}</td>

@@ -38,14 +38,25 @@ services:
     environment:
       DATABASE_URL: postgres://politeness:${POSTGRES_PASSWORD}@db:5432/politeness
       SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET kerak}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-5-5}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-5-mini}
       COOKIE_SECURE: ${COOKIE_SECURE:-1}
     ports:
-      - "127.0.0.1:3000:3000"
+      # Standart: faqat nginx orqali (127.0.0.1:3000). Domensiz serverda: APP_BIND=0.0.0.0 APP_PORT=8090
+      - "${APP_BIND:-127.0.0.1}:${APP_PORT:-3000}:3000"
     depends_on:
       migrate:
         condition: service_completed_successfully
+
+  # Domensiz tashqi HTTPS link (Cloudflare quick tunnel). Yoqish: .env ga COMPOSE_PROFILES=tunnel
+  # Link: docker compose logs tunnel | grep trycloudflare.com  (konteyner qayta yaratilganda o'zgaradi)
+  tunnel:
+    image: cloudflare/cloudflared:2025.11.1
+    profiles: ["tunnel"]
+    restart: unless-stopped
+    command: ["tunnel", "--no-autoupdate", "--url", "http://app:3000"]
+    depends_on:
+      - app
 
 volumes:
   pgdata:

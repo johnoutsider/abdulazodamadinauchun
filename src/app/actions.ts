@@ -46,7 +46,7 @@ export async function register(_: AuthState, fd: FormData): Promise<AuthState> {
     [d.email, await bcrypt.hash(d.password, 10), d.name, d.age_group || null, d.gender || null, d.status || null, d.native_lang || null],
   );
   await createSession(row!.id);
-  redirect("/analyze");
+  redirect("/");
 }
 
 export async function login(_: AuthState, fd: FormData): Promise<AuthState> {
@@ -58,5 +58,5 @@ export async function login(_: AuthState, fd: FormData): Promise<AuthState> {
   const ok = await bcrypt.compare(password, u?.password_hash ?? "$2a$10$invalidinvalidinvalidinvalidinvalidinvalidinvalidinvali");
   if (!u || !ok) return { error: "bad_login" };
   await createSession(u.id);
-  redirect("/analyze");
+  redirect("/");
 }

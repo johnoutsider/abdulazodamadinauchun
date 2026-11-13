@@ -27,9 +27,9 @@ export default async function Surveys() {
           <input type="file" name="file" accept=".csv,.xlsx,.xls" required />
         </AdminForm>
       </div>
-      <div className="overflow-x-auto rounded-xl border bg-white">
+      <div className="card overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-slate-100"><tr><th className="p-3">Sarlavha</th><th className="p-3">Savollar</th><th className="p-3">Javoblar</th><th className="p-3">Holat</th><th className="p-3">Amallar</th></tr></thead>
+          <thead className="border-b bg-slate-50"><tr><th className="p-3">Sarlavha</th><th className="p-3">Savollar</th><th className="p-3">Javoblar</th><th className="p-3">Holat</th><th className="p-3">Amallar</th></tr></thead>
           <tbody>{rows.map((r) => (
             <tr key={r.id} className="border-t">
               <td className="p-3">{r.title}</td><td className="p-3">{r.q}</td><td className="p-3">{r.r}</td><td className="p-3">{r.is_active ? "Faol" : "O'chiq"}</td>
