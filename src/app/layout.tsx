@@ -57,75 +57,101 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       : []),
   ];
 
-  const btn = "rounded-lg px-3 py-2 text-sm font-medium transition-colors";
-  return (
+  const link = "rounded-md px-3 py-2 font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900";
+  const brand = (
+    <Link href="/" className="flex items-center gap-2.5">
+      <Logo />
+      <span className="leading-tight">
+        <span className="block font-serif text-[1.05rem] font-semibold text-slate-900">{t("appName")}</span>
+        <span className="block text-[0.68rem] uppercase tracking-wider text-slate-500">PhD · Sociopragmatics</span>
+      </span>
+    </Link>
+  );
+  const langSwitch = (
+    <form action={setLang} className="flex rounded-lg bg-slate-100 p-0.5 text-xs font-semibold">
+      {(["uz", "en"] as const).map((l) => (
+        <button key={l} name="lang" value={l}
+          className={`rounded-md px-2.5 py-1.5 transition-colors ${lang === l ? "bg-white text-indigo-800 shadow-sm" : "text-slate-500 hover:text-slate-800"}`}>
+          {l.toUpperCase()}
+        </button>
+      ))}
+    </form>
+  );
+  const footer = (
+    <footer className="border-t border-slate-200 bg-white">
+      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <span>© {new Date().getFullYear()} {t("appName")} · {t("footer_org")}</span>
+        <span>{t("roles_note")}</span>
+      </div>
+    </footer>
+  );
+  const html = (body: React.ReactNode, cls: string) => (
     <html lang={lang} className={`${inter.variable} ${serif.variable} h-full antialiased`}>
-      <body className="min-h-full bg-slate-50 text-slate-900 lg:flex">
-        <aside className="sticky top-0 z-30 border-b border-slate-200 bg-white lg:flex lg:h-screen lg:w-64 lg:shrink-0 lg:flex-col lg:border-b-0 lg:border-r">
-          <div className="flex items-center gap-2.5 px-4 pt-4 pb-3 lg:px-5 lg:pt-6 lg:pb-6">
-            <Link href="/" className="flex items-center gap-2.5">
-              <Logo />
-              <span className="leading-tight">
-                <span className="block font-serif text-[1.05rem] font-semibold text-slate-900">{t("appName")}</span>
-                <span className="block text-[0.68rem] uppercase tracking-wider text-slate-500">PhD · Sociopragmatics</span>
+      <body className={`min-h-full bg-slate-50 text-slate-900 ${cls}`}>{body}</body>
+    </html>
+  );
+
+  // Tizimga kirmagan: oddiy yuqori header (avvalgi ko'rinish)
+  if (!user) {
+    return html(
+      <>
+        <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur">
+          <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-1 px-4 py-3 text-sm sm:px-6">
+            <div className="mr-4">{brand}</div>
+            <div className="order-last -mx-3 flex w-full gap-1 overflow-x-auto pt-2 lg:order-none lg:mx-0 lg:w-auto lg:pt-0">
+              <Link href="/analyze" className={link}>{t("nav_analyze")}</Link>
+              <Link href="/corpus" className={link}>{t("nav_corpus")}</Link>
+              <Link href="/survey" className={link}>{t("nav_survey")}</Link>
+              <Link href="/about" className={`${link} whitespace-nowrap`}>{t("nav_about")}</Link>
+            </div>
+            <span className="flex-1" />
+            <Link href="/login" className={link}>{t("nav_login")}</Link>
+            <Link href="/register" className="rounded-lg bg-indigo-800 px-4 py-2 font-medium text-white shadow-sm transition-colors hover:bg-indigo-900">{t("nav_register")}</Link>
+            <div className="ml-2">{langSwitch}</div>
+          </nav>
+        </header>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">{children}</main>
+        {footer}
+      </>,
+      "flex flex-col",
+    );
+  }
+
+  // Tizimga kirgan: chapda sidebar, tepada umumiy header (o'ngda akkaunt)
+  const initials = user.name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join("") || "?";
+  return html(
+    <>
+      <aside className="hidden bg-white lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-64 lg:shrink-0 lg:flex-col lg:border-b-0 lg:border-r">
+        <div className="hidden h-16 shrink-0 items-center border-b border-slate-200/80 px-5 lg:flex">{brand}</div>
+        <div className="px-3 py-2 lg:flex-1 lg:overflow-y-auto lg:py-4">
+          <SidebarNav items={items} adminTitle={t("nav_section_research")} />
+        </div>
+      </aside>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="sticky top-0 z-20 border-b border-slate-200/80 bg-white/85 backdrop-blur">
+          <div className="flex h-16 items-center gap-3 px-4 sm:px-8">
+            <Link href="/" className="lg:hidden" aria-label={t("appName")}><Logo /></Link>
+            <span className="flex-1" />
+            <Link href="/me" className="flex items-center gap-2.5 rounded-lg px-2 py-1 transition-colors hover:bg-slate-100">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-800">{initials}</span>
+              <span className="hidden text-right leading-tight sm:block">
+                <span className="block max-w-[14rem] truncate text-sm font-medium text-slate-900">{user.name}</span>
+                <span className="block text-xs text-slate-500">{researcher ? t("role_researcher") : t("role_user")}</span>
               </span>
             </Link>
+            <form action={logout}><button className={`${link} text-sm`}>{t("nav_logout")}</button></form>
+            {langSwitch}
           </div>
-          <div className="px-3 pb-3 lg:flex-1 lg:overflow-y-auto lg:pb-0">
+          {/* Kichik ekranda: bo'limlar header ostida gorizontal qatorda */}
+          <div className="border-t border-slate-200/80 px-3 py-2 lg:hidden">
             <SidebarNav items={items} adminTitle={t("nav_section_research")} />
           </div>
-          <div className="hidden border-t border-slate-200 p-4 lg:block">
-            {user ? (
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-medium text-slate-900">{user.name}</div>
-                  <div className="truncate text-xs text-slate-500">{researcher ? t("role_researcher") : t("role_user")}</div>
-                </div>
-                <form action={logout}><button className={`${btn} text-slate-600 hover:bg-slate-100`}>{t("nav_logout")}</button></form>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-2">
-                <Link href="/login" className={`${btn} border text-center text-slate-700 hover:bg-slate-50`}>{t("nav_login")}</Link>
-                <Link href="/register" className={`${btn} bg-indigo-800 text-center text-white hover:bg-indigo-900`}>{t("nav_register")}</Link>
-              </div>
-            )}
-            <form action={setLang} className="mt-3 flex rounded-lg bg-slate-100 p-0.5 text-xs font-semibold">
-              {(["uz", "en"] as const).map((l) => (
-                <button key={l} name="lang" value={l}
-                  className={`flex-1 rounded-md py-1.5 transition-colors ${lang === l ? "bg-white text-indigo-800 shadow-sm" : "text-slate-500 hover:text-slate-800"}`}>
-                  {l.toUpperCase()}
-                </button>
-              ))}
-            </form>
-          </div>
-        </aside>
-
-        <div className="flex min-w-0 flex-1 flex-col">
-          {/* Kichik ekranda: kirish va til tugmalari */}
-          <div className="flex items-center justify-end gap-2 px-4 pt-3 lg:hidden">
-            {user ? (
-              <form action={logout}><button className={`${btn} text-slate-600`}>{t("nav_logout")}</button></form>
-            ) : (
-              <>
-                <Link href="/login" className={`${btn} text-slate-700`}>{t("nav_login")}</Link>
-                <Link href="/register" className={`${btn} bg-indigo-800 text-white`}>{t("nav_register")}</Link>
-              </>
-            )}
-            <form action={setLang} className="flex rounded-lg bg-slate-100 p-0.5 text-xs font-semibold">
-              {(["uz", "en"] as const).map((l) => (
-                <button key={l} name="lang" value={l} className={`rounded-md px-2.5 py-1.5 ${lang === l ? "bg-white text-indigo-800 shadow-sm" : "text-slate-500"}`}>{l.toUpperCase()}</button>
-              ))}
-            </form>
-          </div>
-          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-8 lg:py-10">{children}</main>
-          <footer className="border-t border-slate-200 bg-white">
-            <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-              <span>© {new Date().getFullYear()} {t("appName")} · {t("footer_org")}</span>
-              <span>{t("roles_note")}</span>
-            </div>
-          </footer>
-        </div>
-      </body>
-    </html>
+        </header>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-8 lg:py-10">{children}</main>
+        {footer}
+      </div>
+    </>,
+    "lg:flex",
   );
 }
